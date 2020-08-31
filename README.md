@@ -1,68 +1,118 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 固守老旧的解决方案的确会让你更不容易犯错，但长江后浪推前浪业务的诉求始终在变，墨守成规就会被淘汰
 
-## Available Scripts
+- 没有constructor this.setState componentDidMount render
 
-In the project directory, you can run:
+- 新特性
+- Context
+- ContestType
+- lazy
+- Suspense
+- memo
 
-### `yarn start`
+# 类组件的不足
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 状态逻辑复用难
+    缺少复用机制
+    渲染属性和高阶组件导致层级沉余
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- 趋向复杂难以维护
+    生命周期函数混杂不相干逻辑
+    相干逻辑分散在不同生命周期
 
-### `yarn test`
+- this指向困扰
+    内联函数过度创建新句柄
+    类成员函数不能保证this
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Hooks优势
+ - 优化类组件的三大问题
+    函数组件无this问题
+    自定义Hooks方便复用状态逻辑
+    副作用的关注点分离
 
-### `yarn build`
+## useState 每次都会尊循第一次组件渲染的顺序变化
+- 不能变更顺序
+- 不能两次渲染组件次数不一样(固定的次数和数量)
+- 所以useState必须在组件的顶层使用，不能用在条件语句中，循环中使用
+- useState(()=>{
+    return props.defaultCount || 0
+})//默认值可以传函数只在第一次渲染时执行后面不执行
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+可以安装eslint-plugin-react-hooks 解决这个问题package.jsona >
+eslintConfig: {
+    plugins: [
+        'react-hooks'
+    ],
+    rules: {
+        'react-hooks/rules-of-hooks':'error'
+    }
+}
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## useEffect
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 副作用时机 Mount之后
+            Update之后
+            Unmount之前
 
-### `yarn eject`
+- 每次渲染都会执行render
+    第一次渲染相当于componentDidMount
+    后面的渲染都相当于componentDidUpdate
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+useEffect(()=>{
+    return ()=>{
+        // 在试图被销毁之前触发
+        // 两种销毁的原因，从新渲染，组件卸载
+    }
+}, []) // （只有数组的每一项都不变才会阻止effect从新执行）加这个参数函数只会发生在第一次渲染后
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# useContext
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+在hooks中还可以使用consumer但是ConstType不能用了（依赖类组件）
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# useMemo
+是在渲染期间完成的,
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+useMemo(() => {
+    return count * 2
+}, [count === 3]);
 
-### Code Splitting
+# useRef 
+获取dom元素
+同步组件之间的顺序
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+# 自定义hooks
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
 
-### Making a Progressive Web App
+# hooks官方法则
+仅在顶层调用hooks函数（不能在循环语句，条件语句，或者是嵌套函数中调用hooks）会改变调用顺序，导致bug
+仅在函数组件和自定义hooks中，调用hooks函数(不能再其他普通函数中调用)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+# 常见的问题
+* 对传统React的影响
+ 生命周期函数如何映射到Hooks中
+ 类组件成员变量如何映射到Hooks?
+ Hooks中如何获取历史props和state?
+ 如何强制更新一个Hooks组件？
 
-### Advanced Configuration
+```
+//见代码 life
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```
 
-### Deployment
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+# Redux工具库
+* 三大原则
+    单一数据源
+    状态不可变
+    纯函数修改数据
 
-### `yarn build` fails to minify
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+
+
+
+
+ # hooksmod
