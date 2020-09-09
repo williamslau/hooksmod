@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-
+import ContextMod from './Context.jsx'
+import LazyMod from './Lazy.jsx'
+import MemoMod from './Memo.jsx'
+import EffectMod from './useEffect.jsx'
+import UseContextMod from './useContext.jsx'
+import UseMemoMod from './useMemo.jsx'
+import UseCallBack from './useCallBack.jsx'
+import UseRef from './useRef.jsx'
+import Custom from './custom.jsx'
+import TodoList from './TodoList.jsx'
+import TodoListRedux from './TodoListRedux.jsx'
+import TodoListReducer from './TodoListReducer.jsx'
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <ContextMod /> */}
+    {/* <LazyMod /> */}
+    {/* <MemoMod /> */}
+    {/* <EffectMod /> */}
+    {/* <UseContextMod /> */}
+    {/* <UseMemoMod /> */}
+    {/* <UseCallBack /> */}
+    {/* <UseRef /> */}
+    {/* <Custom /> */}
+    {/* <TodoList /> */}
+    {/* <TodoListRedux /> */}
+    <TodoListReducer />
   </React.StrictMode>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
